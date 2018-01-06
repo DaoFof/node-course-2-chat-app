@@ -17,6 +17,15 @@ io.on('connection', (socket)=>{
   socket.emit() emit an event to a single connection
   */
 
+  socket.emit('newMessage',{
+    from: 'Admin',
+    text: 'Welcome to the chat App'
+  });
+  socket.broadcast.emit('newMessage',{
+    from:'Admin',
+    text:'New user joined'
+  })
+
   socket.on('createMessage',(message)=>{
     console.log('createMessage', message);
     io.emit('newMessage', {
@@ -27,6 +36,13 @@ io.on('connection', (socket)=>{
     /*
     io.emit() emit an event to every single connection
     */
+
+    // socket.broadcast.emit('newMessage',{
+    //   from : message.from,
+    //   text : message.text,
+    //   createAt: new Date().getTime(),
+    // });
+    /*socket.broadcast.emit(,{}) is going to emit the message to everyone except the sender*/
   });
 
   socket.on('disconnect',()=>{
