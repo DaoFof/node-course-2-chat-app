@@ -22,9 +22,10 @@ io.on('connection', (socket)=>{
 
   socket.broadcast.emit('newMessage',generateMessage('Admin', 'New user joined'))
 
-  socket.on('createMessage',(message)=>{
+  socket.on('createMessage',(message, callback)=>{
     console.log('createMessage', message);
     io.emit('newMessage', generateMessage(message.from, message.text));
+    callback('This is from the server');
     /*
     io.emit() emit an event to every single connection
     */
@@ -34,7 +35,7 @@ io.on('connection', (socket)=>{
     //   text : message.text,
     //   createAt: new Date().getTime(),
     // });
-    /*socket.broadcast.emit(,{}) is going to emit the message to everyone except the sender*/
+    /*socket.broadcast.emit('',{}) is going to emit the message to everyone except the sender*/
   });
 
   socket.on('disconnect',()=>{
