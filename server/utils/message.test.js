@@ -17,7 +17,7 @@ describe('generateMessage',()=> {
 describe('generateLocationMessage',()=>{
   it('should generate correct locat object',()=>{
     var from= 'Daouda';
-    var lagitude = 15;
+    var latitude = 15;
     var longitude = 12;
     var url = 'https://www.google.com/maps?q=15,12';
     var locationMessage = generateLocationMessage(from,latitude,longitude);
