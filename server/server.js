@@ -24,6 +24,8 @@ io.on('connection', (socket)=>{
 
   //index.js events
 
+  socket.emit('numberOfConnected', users.getUserList().length);
+
   socket.emit('homePage', users.getRoomList());
 
 
@@ -92,6 +94,7 @@ io.on('connection', (socket)=>{
     if(user){
       io.to(user.room).emit('updateUserList',users.getUserList(user.room));
       io.emit('homePage', users.getRoomList());
+      socket.emit('numberOfConnected', users.getUserList.length);
       io.to(user.room).emit('newMessage',generateMessage('Admin', `${user.name} has left`));
     }
   });

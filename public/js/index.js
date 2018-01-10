@@ -10,6 +10,12 @@ socket.on('homePage', function(chatRooms){
   });
 });
 
+socket.on('numberOfConnected', function(activeUser){
+  var numberOfConnected = jQuery('#numberOfConnected');
+  numberOfConnected.text('Number of active users : ' + activeUser);
+  console.log(activeUser);
+});
+
 $(roomTextbox).change(function(){
   if(roomTextbox.val().length>0){
     $(select).parent().hide('slow');

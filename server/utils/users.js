@@ -36,8 +36,13 @@ class Users{
   }
 
   getUserList(room){
-    var users = this.users.filter((user)=> user.room === room);
-    var nameArray = users.map((user)=> user.name);
+    var nameArray = "";
+    if(!room){
+      nameArray = this.users.map((user)=> user.name);
+    }else{
+      var users = this.users.filter((user)=> user.room === room);
+      nameArray = users.map((user)=> user.name);
+    }
     /*
     map() is like filter but it lets us return the value we want to use(keep)
     */
