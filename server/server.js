@@ -22,9 +22,19 @@ io.on('connection', (socket)=>{
   socket.emit() emit an event to a single connection
   */
 
+  //index.js events
+
+  socket.emit('homePage', users.getRoomList());
+
+
+  //chat.js events
   socket.on('join', (params, callback)=>{
     if(!isRealString(params.name) || !isRealString(params.room)){
       return callback('Name and room name are required');
+    }
+    var user = users.getUserByName(params.name);
+    if(user && user.room === params.room){
+      return callback('Name already exist in chat room')
     }
 
     socket.join(params.room);
@@ -42,6 +52,9 @@ io.on('connection', (socket)=>{
 
     socket.broadcast.to(params.room).emit('newMessage',generateMessage('Admin', `${params.name} has joined`));
 
+    //index.js event
+    io.emit('homePage', users.getRoomList());
+    //index.js event
 
     callback();
   });
@@ -78,6 +91,7 @@ io.on('connection', (socket)=>{
     var user = users.removeUser(socket.id);
     if(user){
       io.to(user.room).emit('updateUserList',users.getUserList(user.room));
+      io.emit('homePage', users.getRoomList());
       io.to(user.room).emit('newMessage',generateMessage('Admin', `${user.name} has left`));
     }
   });

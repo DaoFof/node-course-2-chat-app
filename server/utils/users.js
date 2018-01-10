@@ -31,6 +31,9 @@ class Users{
   getUser(id){
     return this.users.filter((user)=> user.id===id)[0];
   }
+  getUserByName(name){
+    return this.users.filter((user)=>user.name===name)[0];
+  }
 
   getUserList(room){
     var users = this.users.filter((user)=> user.room === room);
@@ -39,6 +42,10 @@ class Users{
     map() is like filter but it lets us return the value we want to use(keep)
     */
     return nameArray;
+  }
+  getRoomList(){
+    var rooms = this.users.map((user)=>user.room);
+    return rooms;
   }
 }
 

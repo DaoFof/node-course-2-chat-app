@@ -61,14 +61,29 @@ describe('Users',()=>{
 
     expect(user).toNotExist();
   });
+  it('should find user by name',()=>{
+    var userName = 'Mike';
+    var user = users.getUserByName(userName);
+    expect(user.name).toBe(userName);
+  });
 
-
+  it('should not find user by name',()=>{
+    var userName = 'Daouda';
+    var user = users.getUserByName(userName);
+    expect(user).toNotExist();
+  });
   it('should return names for node course', ()=>{
     var userList = users.getUserList('Node Course');
     expect(userList).toEqual(['Mike', 'Julie']);
-  })
+  });
   it('should return names for react course', ()=>{
     var userList = users.getUserList('React Course');
     expect(userList).toEqual(['Jen']);
-  })
+  });
+
+  it('should return rooms name', ()=>{
+    var roomList = users.getRoomList();
+    expect(roomList).toEqual(['Node Course', 'React Course','Node Course' ]);
+  });
+
 });

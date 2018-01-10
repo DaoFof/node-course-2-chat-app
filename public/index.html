@@ -8,7 +8,7 @@
 </head>
 <body class="centered-form">
   <div class="centered-form__form">
-    <form action="/chat.html">
+    <form action="/chat.html" id="login">
       <div class="form-field">
         <h3>Join a Chat</h3>
       </div>
@@ -18,7 +18,14 @@
       </div>
       <div class="form-field">
         <label for="">Room name</label>
-        <input type="text" name="room"/>
+        <input type="text" name="room" placeholder="Create a new room"/>
+      </div>
+      <div class="form-field" >
+        <label for="">Rooms available</label>
+        <!--Rooms list come here -->
+        <select class="" name="roomList" id="roomList">
+
+        </select>
       </div>
       <div class="form-field">
         <button>Join</button>
@@ -26,4 +33,7 @@
     </form>
   </div>
 </body>
+<script src="/socket.io/socket.io.js"></script>
+<script src="js/libs/jquery-3.2.1.min.js"></script>
+<script src="./js/index.js"></script>
 </html>

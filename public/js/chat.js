@@ -20,6 +20,7 @@ function scrollToBottom(){
 
 socket.on('connect', function () {
   var params = jQuery.deparam(window.location.search);
+  params.room = params.room.toLowerCase();
 
   socket.emit('join',params, function(err){
     if(err){
@@ -41,8 +42,8 @@ socket.on('updateUserList', function(users){
 
   users.forEach(function (user){
     //console.log(user);
-    ol.append(jQuery('<li style="color: black"></li>').text(user));
-  });
+  ol.append(jQuery('<li style="color: black"></li>').text(user));
+});
 
   jQuery('#users').html(ol);
 });
