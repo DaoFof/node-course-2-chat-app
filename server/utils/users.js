@@ -1,7 +1,3 @@
-[{
-  id: 'dfwesdv'
-}]
-
 //addUser(id, room, name)
 //removeUser(id)
 //getUser(id)

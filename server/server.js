@@ -7,12 +7,15 @@ const socketIO = require('socket.io');
 const {generateMessage, generateLocationMessage} = require('./utils/message');
 const {isRealString} = require('./utils/validation.js');
 const {Users} = require('./utils/users');
+const {Rooms} = require('./utils/rooms');
 const publicPath = path.join(__dirname,'../public');
 const port = process.env.PORT || 3000;
 var app =  express();
 var server =  http.createServer(app);
 var io = socketIO(server);
 var users = new Users();
+var rooms = new Rooms();
+
 
 app.use(express.static(publicPath));
 
@@ -39,12 +42,24 @@ io.on('connection', (socket)=>{
       return callback('Name already exist in chat room')
     }
 
+    var room = rooms.getRoom(params.room);
+    if(!room){
+      var room = rooms.addRoom(params.room, params.type, params.key, params.name, 0);
+      room.activeUser++;
+    }else{
+      if(room.type ==='Private' && room.key !== params.key){
+        return callback('Wrong key phrase!');
+      }
+      room.activeUser++;
+    }
     socket.join(params.room);
     //socket.leave('  '); leave a room
 
     //io.emit -> io.to('The office Fans').emit
     //socket.broadcast.emit -> socket.broadcast.to('The office fans').emit
     //socket.emit
+
+
 
     users.removeUser(socket.id);
     users.addUser(socket.id, params.name, params.room);
@@ -92,6 +107,13 @@ io.on('connection', (socket)=>{
   socket.on('disconnect',()=>{
     var user = users.removeUser(socket.id);
     if(user){
+      var room = rooms.getRoom(user.room);
+      room.activeUser--;
+
+      if(!(room.activeUser > 0)){
+        rooms.removeRoom(user.room);
+      }
+
       io.to(user.room).emit('updateUserList',users.getUserList(user.room));
       io.emit('homePage', users.getRoomList());
       socket.emit('numberOfConnected', users.getUserList.length);

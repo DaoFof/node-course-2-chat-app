@@ -1,35 +1,48 @@
 var socket = io();
 
 var loginForm = jQuery('#login');
-var select = jQuery('#roomList');
-var roomTextbox = jQuery('[name=room]');
+var selectRoom = jQuery('#roomList');
+var selectTypeRoom = jQuery('#roomType');
+var roomNameTextBox = jQuery('[name=room]');
+var roomKeyTextBox = jQuery('[name=key]');
 
 socket.on('homePage', function(chatRooms){
   chatRooms.forEach(function (chatRoom){
-    select.append(jQuery('<option style="color: black"></option>').text(chatRoom));
+    selectRoom.append(jQuery('<option style="color: black"></option>').text(chatRoom));
   });
 });
 
 socket.on('numberOfConnected', function(activeUser){
   var numberOfConnected = jQuery('#numberOfConnected');
   numberOfConnected.text('Number of active users : ' + activeUser);
-  console.log(activeUser);
 });
 
-$(roomTextbox).change(function(){
-  if(roomTextbox.val().length>0){
-    $(select).parent().hide('slow');
+$(roomNameTextBox).change(function(){
+  if(roomNameTextBox.val().length>0){
+    $(selectRoom).parent().hide('slow');
   }else{
-    $(select).parent().show('fast');
+    $(selectRoom).parent().show('fast');
   }
 });
 
 $(loginForm).submit(function(){
-  if(roomTextbox.val().length>0){
-    $(select).parent().remove();
+  if(roomNameTextBox.val().length>0){
+    $(selectRoom).parent().remove();
   }else{
-    $(select).attr('name', 'room');
-    $(roomTextbox).remove();
+    $(selectRoom).attr('name', 'room');
+    $(roomNameTextBox).remove();
   }
   return true;
+});
+
+$(selectTypeRoom).change(function(){
+  if($(this).val() === 'Private'){
+    $(roomKeyTextBox).parent().show('slow');
+  }else{
+    $(roomKeyTextBox).parent().hide('slow');
+  }
+});
+
+$(document).ready(function(){
+  $(roomKeyTextBox).parent().hide('fast');
 });
